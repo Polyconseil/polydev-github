@@ -4,7 +4,7 @@ ChangeLog
 0.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix Github repository name regexp
 
 
 0.1.0 (2018-04-20)

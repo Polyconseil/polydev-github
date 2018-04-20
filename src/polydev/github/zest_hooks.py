@@ -1,5 +1,5 @@
 import re
-import subprocess  # noqa: S404
+import subprocess
 
 import github_release
 
@@ -13,7 +13,7 @@ def format_changelog(data):
 
 def get_github_repository():
     remotes = subprocess.check_output(['git', 'remote', '-v']).decode()  # noqa:S603,S607
-    repositories = set(re.findall('git@github.com:(\w+/\w+).git', remotes))
+    repositories = set(re.findall('git@github\.com:([\w-]+/[\w-]+)\.git', remotes))
     return repositories.pop()
 
 
