@@ -4,7 +4,7 @@ ChangeLog
 0.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix setuptools package initialisation
 
 
 0.1.1 (2018-04-20)
