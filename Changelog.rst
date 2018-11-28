@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-0.1.3 (unreleased)
+0.1.3 (2018-11-28)
 ------------------
 
 - Allow to use Github remote without the .git suffix
