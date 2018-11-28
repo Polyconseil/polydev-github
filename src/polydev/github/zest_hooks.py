@@ -11,10 +11,9 @@ def format_changelog(data):
     return '\n'.join(lines)
 
 
-def get_github_repository():
+def get_github_repositories():
     remotes = subprocess.check_output(['git', 'remote', '-v']).decode()  # noqa:S603,S607
-    repositories = set(re.findall('git@github\.com:([\w-]+/[\w-]+)\.git', remotes))
-    return repositories.pop()
+    return set(re.findall(r'git@github\.com:([\w-]+/[\w-]+)(?:\.git)?', remotes))
 
 
 def ask_direct_question(question, default=None):
@@ -42,25 +41,25 @@ def ask_direct_question(question, default=None):
 def publish_release_on_github(data):
     release_tag = data['headings'][0]['version']  # Should be data['version']...
     changelog = format_changelog(data)
-    repository = get_github_repository()
 
-    response = ask_direct_question(
-        "\n\n{changelog}\n\nPublish release {release} to Github ({repo})?".format(
-            changelog=changelog,
-            release=release_tag,
-            repo=repository,
-        ),
-        default=True,
-    )
+    for repository in get_github_repositories():
+        response = ask_direct_question(
+            "\n\n{changelog}\n\nPublish release {release} to Github ({repo})?".format(
+                changelog=changelog,
+                release=release_tag,
+                repo=repository,
+            ),
+            default=True,
+        )
 
-    if response:
-        try:
-            github_release.gh_release_create(
-                repository,
-                release_tag,
-                body=changelog,
-                publish=True,
-            )
-        except EnvironmentError as e:
-            print(e)
-            print('=> You should create the release manualy.')
+        if response:
+            try:
+                github_release.gh_release_create(
+                    repository,
+                    release_tag,
+                    body=changelog,
+                    publish=True,
+                )
+            except EnvironmentError as e:
+                print(e)
+                print('=> You should create the release manualy.')
